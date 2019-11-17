@@ -1,0 +1,62 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: authcfg
+data:
+  client_id: "f90681ea-53a9-4a6d-a98e-aaa63e54365f"
+  token_uri: "https://login.microsoftonline.com/72b17115-9915-42c0-9f1b-4f98e5a4bcd2/oauth2/v2.0/token"
+  authorize_uri: "https://login.microsoftonline.com/72b17115-9915-42c0-9f1b-4f98e5a4bcd2/oauth2/v2.0/authorize"
+  scope: "https://graph.microsoft.com/email"
+  grant_type: "authorization_code"
+  response_type: "code"
+  redirect_uri: "https://codebyscott.info/authorize"
+  success_uri: https://www.google.com"
+  failure_uri: "https://www.yahoo.com"
+
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: authkey
+type: Opaque
+data:
+  client_secret: "VVs4PUs4WjlVQHYwalUtVjNiTDVYYUROUFY6PXFRbFc="
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: basicoauth
+spec:
+  selector:
+    matchLabels:
+      app: basicoauth
+  template:
+    metadata:
+      labels:
+        app: basicoauth
+    spec:
+      containers:
+      - name: basicoauth
+        image: scottschwab/basicauth:0.1
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: secret
+          mountPath: "/etc/auth.secret"
+          readOnly: true
+        - name: cfg
+          mountPath: "/etc/auth.configmap"
+      volumes:
+        - name: secret
+          secret:
+            secretName: authkey
+        - name: cfg
+          configMap:
+            name: authcfg
