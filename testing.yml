@@ -22,7 +22,7 @@ metadata:
   name: authkey
 type: Opaque
 data:
-  client_secret: "VVs4PUs4WjlVQHYwalUtVjNiTDVYYUROUFY6PXFRbFc="
+  client_secret: "eW91IHN1Y2s="
 
 ---
 apiVersion: apps/v1
