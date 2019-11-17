@@ -265,7 +265,7 @@ public class Oauth2Controller {
 
         try {
             final Properties props = new Properties();
-            final BufferedReader fin = new BufferedReader(new FileReader(deploymentFile);
+            final BufferedReader fin = new BufferedReader(new FileReader(deploymentFile));
             props.load(fin);
             for (final Entry<Object,Object> entry: props.entrySet()) {
                 settings.put((String) entry.getKey(), (String) entry.getValue());
